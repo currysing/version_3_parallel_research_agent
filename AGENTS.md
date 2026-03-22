@@ -36,8 +36,7 @@ uv run python3 -m agent_runner
 ### Environment Variables
 Create a `.env` file in the project root with:
 ```
-GOOGLE_API_KEY=your-google-api-key
-GOOGLE_GENAI_USE_VERTEXAI=FALSE
+ZAI_API_KEY=your-zhipu-api-key
 ```
 
 ### Testing
@@ -65,7 +64,8 @@ from google.genai.types import Content, Part
 from google.adk.agents import LlmAgent, SequentialAgent, ParallelAgent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from google.adk.tools import google_search
+from google.adk.models.lite_llm import LiteLlm
+from tools.ddg_search_tool import web_search
 
 # Local modules (use sys.path manipulation for project root imports)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
@@ -109,17 +109,18 @@ This is the Nth agent in the website building pipeline that:
 import os
 import sys
 from google.adk.agents import LlmAgent
-from google.adk.tools import google_search  # If using tools
+from google.adk.models.lite_llm import LiteLlm
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from utils.file_loader import load_instructions_file
+from tools.ddg_search_tool import web_search  # If using search tool
 
 <agent_name>_agent = LlmAgent(
     name="<agent_name>_agent",
-    model="gemini-2.0-flash",
+    model=LiteLlm(model="zai/glm-4.7"),  # AI model - Zhipu AI GLM-4.7
     instruction=load_instructions_file("agents/<agent_name>/instructions.txt"),
     description=load_instructions_file("agents/<agent_name>/description.txt"),
-    tools=[google_search],  # Optional: include if agent needs tools
+    tools=[web_search],  # Optional: include if agent needs search capability
     output_key="<agent_name>_output"
 )
 ```
@@ -140,7 +141,8 @@ project_root/
 │   │   └── ...
 │   └── ...
 ├── tools/
-│   └── file_writer_tool.py
+│   ├── file_writer_tool.py
+│   └── ddg_search_tool.py
 ├── utils/
 │   └── file_loader.py
 ├── main.py
