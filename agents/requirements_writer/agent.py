@@ -35,7 +35,7 @@ requirements_writer_agent = LlmAgent(
     name="requirements_writer_agent",
     # AI model to use - Gemini 2.5 Flash for detailed requirement analysis and generation
     # Note: This uses 2.5 instead of 2.0 for more sophisticated requirement writing
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     # Load detailed instructions from external text file
     # Instructions contain systematic approach for converting queries to webpage requirements
     # Includes step-by-step logic for analyzing queries and structuring requirements

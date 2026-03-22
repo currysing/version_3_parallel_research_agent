@@ -35,7 +35,7 @@ designer_agent = LlmAgent(
     name="designer_agent",
     # AI model to use - Gemini 2.5 Flash for sophisticated design analysis and specification
     # Uses 2.5 for advanced visual design reasoning and systematic design system creation
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     # Load detailed instructions from external text file
     # Instructions contain systematic approach for creating design systems and visual specs
     # Includes step-by-step logic for translating requirements to concrete design values

@@ -40,7 +40,7 @@ code_writer_agent = LlmAgent(
     name="code_writer_agent",
     # AI model to use - Gemini 2.5 Flash for sophisticated code generation and implementation
     # Uses 2.5 for advanced HTML/CSS/JS generation and design system implementation
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     # Load detailed instructions from external text file
     # Instructions contain systematic approach for converting design specs to working code
     # Includes guidelines for semantic HTML, responsive CSS, and interactive JavaScript

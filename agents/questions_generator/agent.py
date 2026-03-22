@@ -36,8 +36,8 @@ from utils.file_loader import (
 questions_generator_agent = LlmAgent(
     # Agent identifier - unique name for this agent in the system
     name="questions_generator_agent",
-    # AI model to use - Gemini 2.0 Flash for fast, high-quality responses
-    model="gemini-2.0-flash",
+    # AI model to use - Gemini 2.5 Flash for fast, high-quality responses
+    model="gemini-2.5-flash",
     # Load detailed instructions from external text file
     # This keeps the code clean and allows easy modification of agent behavior
     instruction=load_instructions_file("agents/questions_generator/instructions.txt"),
