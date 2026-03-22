@@ -1,8 +1,8 @@
 """
 File: agents/requirements_writer/agent.py
 Purpose: Defines the Requirements Writer Agent that transforms a comprehensive, research-based
-         query into detailed webpage requirements. This agent acts as an expert technical 
-         business analyst, converting high-level concepts into specific, actionable 
+         query into detailed webpage requirements. This agent acts as an expert technical
+         business analyst, converting high-level concepts into specific, actionable
          requirements that developers and designers can use to build webpages.
 
 This is the fourth agent in the website building pipeline that:
@@ -22,33 +22,30 @@ from google.adk.agents import LlmAgent  # Core agent class for creating LLM-base
 
 # Add the project root directory to Python path so we can import utility modules
 # This allows importing from the utils directory two levels up from current file
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 # Import utility function to load instruction files from text files
-from utils.file_loader import load_instructions_file  # Helper to read instruction text files
+from utils.file_loader import (
+    load_instructions_file,
+)  # Helper to read instruction text files
 
 # Create the Requirements Writer Agent instance
 requirements_writer_agent = LlmAgent(
     # Agent identifier - unique name for this agent in the system
-    name = "requirements_writer_agent",
-    
+    name="requirements_writer_agent",
     # AI model to use - Gemini 2.5 Flash for detailed requirement analysis and generation
     # Note: This uses 2.5 instead of 2.0 for more sophisticated requirement writing
-    model = "gemini-flash-latest",
-    
+    model="gemini-2.0-flash",
     # Load detailed instructions from external text file
     # Instructions contain systematic approach for converting queries to webpage requirements
     # Includes step-by-step logic for analyzing queries and structuring requirements
     instruction=load_instructions_file("agents/requirements_writer/instructions.txt"),
-    
     # Load agent description from external text file
     # Provides a brief summary of this agent's technical business analyst role
     description=load_instructions_file("agents/requirements_writer/description.txt"),
-    
     # No tools needed - this agent works with pure text analysis and requirement generation
     # It processes the merged query from query_generator without external API calls
-    
     # Output key - where this agent stores the detailed requirements in the session state
     # The designer agent will reference this key to get the structured requirements document
-    output_key="requirements_writer_output"
+    output_key="requirements_writer_output",
 )

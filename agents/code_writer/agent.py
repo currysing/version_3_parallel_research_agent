@@ -22,36 +22,35 @@ from google.adk.agents import LlmAgent  # Core agent class for creating LLM-base
 
 # Add the project root directory to Python path so we can import utility modules
 # This allows importing from the utils directory two levels up from current file
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 # Import utility function to load instruction files from text files
-from utils.file_loader import load_instructions_file  # Helper to read instruction text files
+from utils.file_loader import (
+    load_instructions_file,
+)  # Helper to read instruction text files
 
 # Import the file writing tool that allows the agent to save the generated webpage
-from tools.file_writer_tool import write_to_file  # Custom tool for writing HTML files to disk
+from tools.file_writer_tool import (
+    write_to_file,
+)  # Custom tool for writing HTML files to disk
 
 # Create the Code Writer Agent instance
 code_writer_agent = LlmAgent(
     # Agent identifier - unique name for this agent in the system
-    name = "code_writer_agent",
-    
+    name="code_writer_agent",
     # AI model to use - Gemini 2.5 Flash for sophisticated code generation and implementation
     # Uses 2.5 for advanced HTML/CSS/JS generation and design system implementation
-    model = "gemini-flash-latest",
-    
+    model="gemini-2.0-flash",
     # Load detailed instructions from external text file
     # Instructions contain systematic approach for converting design specs to working code
     # Includes guidelines for semantic HTML, responsive CSS, and interactive JavaScript
     instruction=load_instructions_file("agents/code_writer/instructions.txt"),
-    
     # Load agent description from external text file
     # Provides a brief summary of this agent's front-end developer role
     description=load_instructions_file("agents/code_writer/description.txt"),
-    
     # Tools available to this agent - file writing capability for saving the generated webpage
     # The write_to_file tool allows the agent to save the complete HTML/CSS/JS to disk
     tools=[write_to_file],
-    
     # No output_key needed - this is the final agent that produces the actual webpage file
     # The file_writer_tool handles the final output by writing directly to the filesystem
 )

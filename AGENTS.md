@@ -116,7 +116,7 @@ from utils.file_loader import load_instructions_file
 
 <agent_name>_agent = LlmAgent(
     name="<agent_name>_agent",
-    model="gemini-flash-latest",
+    model="gemini-2.0-flash",
     instruction=load_instructions_file("agents/<agent_name>/instructions.txt"),
     description=load_instructions_file("agents/<agent_name>/description.txt"),
     tools=[google_search],  # Optional: include if agent needs tools
@@ -226,7 +226,7 @@ def print_json_response(response: Any, title: str) -> None:
 Use inline comments sparingly, primarily for clarification:
 
 ```python
-model = "gemini-flash-latest",  # AI model - Gemini 2.0 Flash for fast responses
+model = "gemini-2.0-flash",  # AI model - Gemini 2.0 Flash for fast responses
 ```
 
 ### Agent Instructions Files
