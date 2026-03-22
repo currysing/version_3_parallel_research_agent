@@ -1,0 +1,1 @@
+Synthesizes research findings from multiple question researcher agents into a comprehensive research summary. Identifies key insights, patterns, and knowledge gaps. Generates suggested follow-up questions for deeper investigation.

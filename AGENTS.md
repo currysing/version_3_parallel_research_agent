@@ -4,7 +4,30 @@ This document provides guidelines for AI coding agents working in this Google AD
 
 ## Project Overview
 
-This is a multi-agent website builder system using Google's Agent Development Kit. The project implements a sequential + parallel orchestration pattern where multiple specialized agents collaborate to research topics and generate complete HTML webpages.
+This is a multi-agent system using Google's Agent Development Kit. The project provides two main pipelines:
+
+### 1. Website Builder Pipeline (`root_website_builder`)
+A sequential + parallel orchestration pattern where multiple specialized agents collaborate to research topics and generate complete HTML webpages.
+
+### 2. Research-Only Pipeline (`research_only_agent`)
+A research-focused pipeline that investigates any topic and produces comprehensive Markdown research reports. Does not build websites - focuses purely on information gathering, synthesis, and documentation.
+
+## Available Agents
+
+When running `adk web ./agents`, the following agents are available in the dropdown:
+
+| Agent | Purpose |
+|-------|---------|
+| `root_website_builder` | Full website building pipeline (6 sequential agents) |
+| `research_only` | Research-only pipeline (4 sequential agents) |
+| `questions_generator` | Sub-agent: Generates research questions |
+| `questions_researcher` | Sub-agent: Parallel research agents |
+| `query_generator` | Sub-agent: Synthesizes research |
+| `requirements_writer` | Sub-agent: Creates webpage requirements |
+| `designer` | Sub-agent: Creates design specifications |
+| `code_writer` | Sub-agent: Generates HTML/CSS/JS |
+| `research_synthesizer` | Sub-agent: Synthesizes research findings |
+| `report_writer` | Sub-agent: Writes Markdown reports |
 
 ## Build, Lint, and Test Commands
 
@@ -134,15 +157,42 @@ project_root/
 │   │   ├── agent.py
 │   │   ├── description.txt
 │   │   └── instructions.txt
-│   ├── code_writer/
+│   ├── research_only/
 │   │   ├── __init__.py
 │   │   ├── agent.py
+│   │   ├── description.txt
+│   │   └── instructions.txt
+│   ├── questions_generator/
 │   │   └── ...
-│   └── ...
+│   ├── questions_researcher/
+│   │   └── ...
+│   ├── query_generator/
+│   │   └── ...
+│   ├── requirements_writer/
+│   │   └── ...
+│   ├── designer/
+│   │   └── ...
+│   ├── code_writer/
+│   │   └── ...
+│   ├── research_synthesizer/
+│   │   ├── __init__.py
+│   │   ├── agent.py
+│   │   ├── description.txt
+│   │   └── instructions.txt
+│   └── report_writer/
+│       ├── __init__.py
+│       ├── agent.py
+│       ├── description.txt
+│       └── instructions.txt
 ├── tools/
-│   └── file_writer_tool.py
+│   ├── file_writer_tool.py
+│   └── markdown_writer_tool.py
 ├── utils/
 │   └── file_loader.py
+├── output/
+│   ├── (website files)
+│   └── research/
+│       └── .gitkeep
 ├── main.py
 ├── agent_runner.py
 ├── pyproject.toml
@@ -293,6 +343,50 @@ parallel_agent = ParallelAgent(
 )
 ```
 
+## Pipeline Architectures
+
+### Website Builder Pipeline (`root_website_builder`)
+
+6-stage sequential pipeline that generates HTML webpages:
+
+```
+User Input (Topic)
+         ↓
+[1] questions_generator_agent (searches topic, generates 5 questions)
+         ↓
+[2] questions_researcher_agent (5 parallel agents answer each question)
+         ↓
+[3] query_generator_agent (merges research into comprehensive query)
+         ↓
+[4] requirements_writer_agent (creates webpage requirements)
+         ↓
+[5] designer_agent (creates visual design specifications)
+         ↓
+[6] code_writer_agent (generates HTML/CSS/JS, writes to file)
+         ↓
+Output: output/{timestamp}_generated_page.html
+```
+
+### Research-Only Pipeline (`research_only_agent`)
+
+4-stage sequential pipeline that produces Markdown research reports:
+
+```
+User Input (Topic)
+         ↓
+[1] questions_generator_agent (generates 5 research questions)
+         ↓
+[2] questions_researcher_agent (5 parallel agents answer each question)
+         ↓
+[3] research_synthesizer_agent (synthesizes findings, identifies gaps)
+         ↓
+[4] report_writer_agent (writes formatted Markdown report)
+         ↓
+Output: output/research/research_report_{timestamp}.md
+```
+
+The research-only pipeline reuses the first two stages from the website builder pipeline and adds new agents for synthesis and report generation.
+
 ## Common Gotchas
 
 1. **sys.path manipulation**: Required for imports from `utils/` and `tools/` when running agents from subdirectories
@@ -300,3 +394,4 @@ parallel_agent = ParallelAgent(
 3. **Async/await**: The ADK Runner uses async methods; use `await` and `async for` appropriately
 4. **Environment variables**: Load `.env` file using `dotenv` before accessing environment variables
 5. **File encoding**: Always use `encoding="utf-8"` when reading/writing files
+6. **Root agent naming**: Pipeline orchestrators must be named `root_agent` (not `<pipeline_name>_agent`) for ADK to discover them

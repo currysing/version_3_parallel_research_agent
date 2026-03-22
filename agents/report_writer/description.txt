@@ -1,0 +1,1 @@
+Formats research findings into comprehensive Markdown reports. Creates well-structured documents with executive summaries, detailed findings, sources, and suggested follow-up questions.

@@ -1,0 +1,1 @@
+A research-only pipeline that investigates any topic and produces a comprehensive Markdown research report. Does not build websites - focuses purely on information gathering, synthesis, and documentation. Outputs to output/research/ directory.
